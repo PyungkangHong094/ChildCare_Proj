@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>I.Helpr Homepage</title>
+    <!-- {% block title %}
+        Homepage
+  {% endblock %} -->
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
+    <link rel="icon" type="image/png" href="{% static 'img/icon.png' %}">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/navigationBar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+
+</head>
+
+<body>
+    {% block body %}
+    <header>
+        <!-- <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-success"> -->
+        <nav class="navbar navbar-custom navbar-expand-md navbar-dark fixed-top">
+            <a class="navbar-brand" href="{% url 'home' %}">I.Helpr</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_parents' %}">For Parents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_sitters' %}">For Sitters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    {% if member_no != None %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mypage' %}">My Page</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <form class="form-inline mt-2 mt-md-0">
+                    {% if member_no == None %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'sign_up' %}">Sign up</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'login' %}">Login</a> {% else %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'mypage' %}">Hello {{ member_name }}!</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'logout' %}">Logout</a> {% endif %}
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main">
+
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                        <rect width="100%" height="100%" fill="#528574" /></svg>
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h1>Welcome to I.Helpr!</h1>
+                            <p>Looking for a sitter? Looking for a child? <br> It is not easy to ask someone to take care of your children. It is not easy to find a job you want.
+                                <br>I.Helpr is here to solve thesse problems. Learn more about I.Helpr!</p>
+                            <p><a class="btn btn-lg btn-info" href="{% url 'about' %}" role="button">Learn More</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                        <rect width="100%" height="100%" fill="#3a6e5c" />
+                        <!-- <image xlink:href='img/sun.jpg' width="100%" height="100%" preserveAspectRatio="none"></image> -->
+                    </svg>
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h1>Looking for a sitter?</h1>
+                            <p>Sign up and see the list of sitters. <br> You don't need to ask around to find someone within the circle of people that they know or find one through agencies.
+                                <br>Sign up as a parent user and used the service for free!</p>
+                            <p><a class="btn btn-lg btn-info" href="{% url 'sign_up' %}" role="button">Sign Up as a Parent
+                                    User</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                        <rect width="100%" height="100%" fill="#265444" />
+                        <!-- <image xlink:href='img/child.jpg' width="100%" height="100%" preserveAspectRatio="none"></image> -->
+                    </svg>
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h1>Looking for a job?</h1>
+                            <p>Sign up and see the list of job openings. <br> You don't need to spend your time and effort looking for a job.
+                                <br>Sign up as a sitter user and used the service for free!</p>
+                            <p><a class="btn btn-lg btn-info" href="{% url 'sign_up' %}" role="button">Sign Up as a Sitter
+                                    User</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <div class="container marketing">
+
+            <hr class="featurette-divider">
+            <div class="row featurette">
+                <div class="col-md-7 order-md-2">
+                    <h2 class="featurette-heading">Reliable!</h2>
+                    <p class="lead">A grading system and review will ensure the credibility of the employee. Parents can also check whether the sitter agreed to work under CCTV and agreed to the criminal history check.
+                    </p>
+                </div>
+                <div class="col-md-5 order-md-1">
+                    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 500x500">
+                        <!-- <image xlink:href='img/reliable.png' width="100%" height="100%" preserveAspectRatio="none"></image> -->
+                        <img src="{% static 'img/reliable.png'%}" style="position: absolute; top: 1%; left: 1%;"
+                            width="400" height="330">
+                    </svg>
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">Easy to contact! </h2>
+                    <p class="lead">Users are able to use messaging system. Between parents and caregivers, they can contact each other easily. Also, it is convenient to manage the message history.</p>
+                </div>
+                <div class="col-md-5">
+                    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 500x500">
+                        <!-- <image xlink:href='img/message.jpg' width="100%" height="100%" preserveAspectRatio="none"></image> -->
+                        <img src="{% static 'img/message.jpg'%}" style="position: absolute;left: 1%;" width="400"
+                            height="400">
+                    </svg>
+                </div>
+            </div>
+            <hr class="featurette-divider">
+
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">Reduce your time and effort! </h2>
+                    <p class="lead">Parents can choose a sitter from a larger pool of people with few mouse clicks. Sitters can choose a job from a larger pool of people with few mouse clicks.</p>
+                </div>
+                <div class="col-md-5">
+                    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="820" height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 500x500">
+                        <!-- <image xlink:href='img/easy.png' width="100%" height="100%" preserveAspectRatio="none"></image> -->
+                        <img src="{% static 'img/easy.png' %}" style="position: absolute; top: 1%; left: 1%;"
+                            width="460" height="310">
+                    </svg>
+                </div>
+            </div>
+            <br>
+            <hr class="featurette-divider">
+        </div>
+
+
+        <footer class="container">
+            <p class="float-right"><a href="#">Back to top</a></p>
+        </footer>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script>
+        window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    {% endblock %}
+</body>
+
+</html>

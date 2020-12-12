@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>I.Helpr Homepage</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
+    <link rel="icon" type="image/png" href="{% static 'img/icon.png' %}">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/navigationBar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/myPage.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/about.css' %}"> -->
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-custom navbar-expand-md navbar-dark fixed-top">
+            <a class="navbar-brand" href="{% url 'home' %}">I.Helpr</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_parents' %}">For Parents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_sitters' %}">For Sitters</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    {% if member_no != None %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mypage' %}">My Page</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <form class="form-inline mt-2 mt-md-0">
+                    {% if member_no == None %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'sign_up' %}">Sign up</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'login' %}">Login</a> {% else %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'mypage' %}">Hello {{ member_name }}!</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'logout' %}">Logout</a> {% endif %}
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <div class="sidenav">
+        <a href="about.html">About</a>
+        <a href="qna">Q&A</a>
+    </div>
+    <div class="container">
+        <h2>Welcome! Learn more about our services</h2>
+        <div class="col-md-12 ">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 style="color:#88beac; padding-top: 30px;">Why do you need our service?</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div style="margin: 30px; font-size: 18px;">In this day and age, the number of
+                                dual-income households is increasing, and many parents are seeking childcare services.
+                                Parents want a guardian whom they can trust. So, they either ask around to find someone
+                                within the circle
+                                of people that they know or find one through agencies. These methods require unnecessary
+                                time and effort if the preferences between the guardian and parents are not met.
+                                Especially, finding a babysitter through an agency
+                                involves the mediation of every conversation between parents and caregivers, which makes
+                                it time-consuming.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="margin:40px 0 10px 0;">
+
+                <div class="panel-heading">
+                    <h4 style="color:#88beac; padding-top: 30px;">What do we provide?</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <ul style="margin: 30px; font-size: 18px;">
+                                <li>Parents can choose a sitter from a larger pool of people with few mouse clicks </li>
+                                <li> A grading system and review will ensure the credibility of the employee </li>
+                                <li> The list of job hunting posts can be filtered by conditions provided in each post,
+                                    and this will save parents’ time for finding the most fit sitter </li>
+                                <li> Messaging system between parents and caregivers </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+
+            <hr style="margin:40px 0 10px 0;">
+
+            <div class="panel-heading">
+                <h4 style="color:#88beac; padding-top: 30px;">How to use our service?</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <ol style="margin: 30px; font-size: 18px;">
+                            <li>Sign up either as a parent user or sitter user. </li>
+                            <li>Browse! If you are a parent user, you can view a list of job-wanted posts. If you are a
+                                sitter user, there will be a list of job-openings waiting for you!</li>
+                            <li>When you find a post you like to apply or contact, sitter users can apply for a position
+                                and parent users can send a message to the sitter.</li>
+                            <li>Start to discuss the details of job with each other by messages! </li>
+                        </ol>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <hr style="margin:40px 0 10px 0;">
+            <div class="panel-heading">
+                <h4 style="color:#88beac; padding-top: 30px;">Easy to apply </h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div style="margin: 30px; font-size: 18px;">Just fill out the application form!
+                            After filling out the application form, please check the seats you applied for and choose
+                            the seats that fit your child.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr style="margin:40px 0 10px 0;">
+            <div class="panel-heading">
+                <h4 style="color:#88beac; padding-top: 30px;">Home visit, wash your hands and start playing!</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div style="margin: 30px; font-size: 18px;">When the sitter arrives at the set time
+                            and place, sitter washs their hands and starts an exciting game and play. To prevent Corona
+                            virus, wear a mask unconditionally.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <hr style="margin:40px 0 10px 0;">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 style="color:#88beac; padding-top: 30px;">From play to learning, Matching Service</h4>
+                </div>
+                <ul class="slidetxt">
+
+                    <li>
+                        <p style="color:#88beac; padding-top: 30px;">Matching Service </p>
+                        <span style="margin: 1px; font-size: 18px;">For parents who feel child care vacuum
+                            with
+                            technology, the teacher is connected to the desired
+                            condition of the child and university student/childcare teacher/specialty teacher.</span>
+                    </li>
+                    <li>
+                        <p style="color:#88beac; padding-top: 30px;">From 1 year old to elementary school student, 365
+                            days child care
+                        </p>
+                        <span style="margin: 1px; font-size: 18px;">Age that cannot be left alone,
+                            Parenting partner IHelp will be with you 365 days.</span>
+                    </li>
+
+                    <li>
+                        <p style="color:#88beac; padding-top: 30px;">Attendance/movement, learning, English, creative
+                            art, play-care
+                        </p>
+                        <span style="margin: 1px; font-size: 18px;">IHelpr is the guardian of children and
+                            is also
+                            responsible for playing and learning.</span>
+                    </li>
+
+                    <li>
+                        <p style="color:#88beac; padding-top: 30px;">Preliminary Social Enterprise Continues Its Career
+                            with Career Jobs </p>
+                        <span style="margin: 1px; font-size: 18px;">Activities for the socially vulnerable
+                            and providing
+                            jobs to career-holding employees are vital to
+                            society.</span>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- <a id="button"></a> -->
+            <div class="top-btn" id="button" style="float: right;"><a href="#">TOP</a></div>
+            <!-- FOOTER -->
+            <script>
+                window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')
+            </script>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+                integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+                integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+                crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+                integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+                crossorigin="anonymous"></script>
+        </div>
+    </div>
+</body>
+
+</html>

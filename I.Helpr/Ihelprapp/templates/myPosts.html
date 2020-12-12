@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>I.Helpr Homepage</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
+    <link rel="icon" type="image/png" href="{% static 'img/icon.png' %}">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/navigationBar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homePage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/myPage.css' %}">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-custom navbar-expand-md navbar-dark fixed-top">
+            <a class="navbar-brand" href="{% url 'home' %}">I.Helpr</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_parents' %}">For Parents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_sitters' %}">For Sitters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'mypage' %}">My Page</a>
+                    </li>
+                </ul>
+                <form class="form-inline mt-2 mt-md-0">
+                    {% if member_no == None %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'sign_up' %}">Sign up</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'login' %}">Login</a> {% else %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'mypage' %}">Hello {{ member_name }}!</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'logout' %}">Logout</a> {% endif %}
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <div class="sidenav">
+        <a href="{% url 'mypage' %}">My Page</a>
+        <a href="{% url 'messages' %}">Messages</a>
+        <a href="{% url 'mypost' %}">My posts</a>
+    </div>
+    <div class="container">
+        <h2>My Posts</h2>
+        <div class="col-md-12 ">
+            <h4 style="color:#88beac;">Posting History</h4>
+            <div class="col-md-12">
+                <table class="table table-hover" id="dev-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in post_list %}
+                        <tr>
+                            <!-- <td>{{post.title}} </td> -->
+                            <td><a href="view_my_post?mypost_id={{post.id}}">{{post.title}}</a></td>
+                            <td>{{post.post_date | date:"Y-m-d"}}</td>
+                            {% if member_type == 'Parent' %}
+                            <td><a class="btn btn-warning" href="view-applicant?mypost_id={{post.id}}" role="button">Applicants</a></td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                            <td><a class="btn btn-danger" href="delete-my-post?mypost_id={{post.id}}" onclick="return confirm('Are you sure to delete this post?')" role="button">Delete</a></td>
+                            <!-- <td><button class="btn btn-danger">Cancel</button></td> -->
+                            {% empty %}
+                            <td></td>
+                            <td>No Result!</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr style="margin:55px 0 10px 0;">
+        <br>
+    </div>
+</body>
+
+</html>

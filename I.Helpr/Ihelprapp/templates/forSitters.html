@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>I.Helpr Homepage</title>
+
+    <link rel="icon" type="image/png" href="{% static 'img/icon.png' %}">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/navigationBar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homePage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/myPage.css' %}">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        var xhr;
+
+
+        function filterPost(e) {
+            e.preventDefault()
+            var parentService = document.getElementById("postType").value;
+            if (parentService == "1") {
+                alert('parentService를 선택하세요');
+                return false;
+            }
+
+            parentPayrate = document.getElementById("parent_payrate").value;
+
+            if (document.getElementById('short').checked) {
+                parentWorkperiod = "S"
+            } else if (document.getElementById('medium').checked) {
+                parentWorkperiod = "M"
+            } else if (document.getElementById('long').checked) {
+                parentWorkperiod = "L"
+            } else {
+                alert('Select work period...')
+                return false
+            }
+
+            parentTimefrom = document.getElementById("parent_Timefrom").value;
+
+            parentWorkto = document.getElementById("parent_Workto").value;
+
+            parentLocation = document.getElementById("paret_Location").value;
+
+            let membergender = document.getElementById("gender").value;
+
+            strurl = "for-sitters?type_of_service=" + parentService + "&payrate=" + parentPayrate + "&work_period=" + parentWorkperiod + "&begin_work_time=" +
+                parentTimefrom + "&end_work_time=" + parentWorkto + "&location=" + parentLocation + "&gender=" + membergender;
+            location.href = strurl
+        }
+
+        function typeValue(element) {
+            document.getElementById("postType").value = element.value;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-custom navbar-expand-md navbar-dark fixed-top">
+            <a class="navbar-brand" href="{% url 'home' %}">I.Helpr</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_parents' %}">For Parents</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'for_sitters' %}">For Sitters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    {% if member_no != None %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mypage' %}">My Page</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <form class="form-inline mt-2 mt-md-0">
+                    {% if member_no == None %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'sign_up' %}">Sign up</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'login' %}">Login</a> {% else %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'mypage' %}">Hello
+                        {{ member_name }}!</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'logout' %}">Logout</a> {% endif %}
+                </form>
+            </div>
+        </nav>
+    </header>
+    <input type="hidden" id="postType" value="House Sitter">
+    <div class="container">
+
+        <h2> </h2>
+        <br>
+        <h2>For Sitters: Looking for a job?</h2>
+
+        <div style="border: 1px solid; border-radius: 5px; padding: 10px;">
+            <h4 class="mb-3">Filters</h4>
+            <form class="needs-validation" novalidate>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <p>What service do you want?</p>
+                        <div class="btn-group" id="parent_Service">
+                            <button value="H" onclick="typeValue(this)" type="button" class="btn btn-info">House
+                                sitter</button>
+                            <button value="P" onclick="typeValue(this)" type="button" class="btn btn-info">Play
+                                sitter</button>
+                            <button value="L" onclick="typeValue(this)" type="button" class="btn btn-info">Learning
+                                sitter</button>
+                            <button value="D" onclick="typeValue(this)" type="button" class="btn btn-info">Day
+                                care</button>
+                            <button value="E" onclick="typeValue(this)" type="button" class="btn btn-info">Else</button>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Pay rate</label>
+                                <input class="form-control" type="number" value="9000" id="parent_payrate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mb-1">
+                <p>Work Period</p>
+                <div class="row">
+                    <div class="custom-control custom-radio" style="margin-left: 15px;">
+                        <input id="short" name="paymentMethod" type="radio" class="custom-control-input" checked>
+                        <label class="custom-control-label" for="short">Short (1day - 1month) </label>
+                    </div>
+                    <div class="custom-control custom-radio" style="margin-left: 20px;">
+                        <input id="medium" name="paymentMethod" type="radio" class="custom-control-input">
+                        <label class="custom-control-label" for="medium">Medium (1month - 6month) </label>
+                    </div>
+                    <div class="custom-control custom-radio" style="margin-left: 20px;">
+                        <input id="long" name="paymentMethod" type="radio" class="custom-control-input">
+                        <label class="custom-control-label" for="long">Long (6month - 1year)</label>
+                    </div>
+                </div>
+
+                <hr class="mb-1">
+                <p>Work Time</p>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="example-time-input">From</label>
+                        <input class="form-control" type="time" value="11:45:00" id="parent_Timefrom">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="example-time-input">To</label>
+                        <input class="form-control" type="time" value="15:45:00" id="parent_Workto">
+                    </div>
+                </div>
+
+                <hr class="mb-1">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="location">Location</label>
+                        <input type="text" class="form-control" id="paret_Location" rows="1"
+                            placeholder="Sondo 1dong~Songdo 3dong"></input>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="gender">Gender</label>
+                        <select class="custom-select d-block" id="gender">
+                            <option value="E">Do not want to choose</option>
+                            <option id="F" value="F">Female</option>
+                            <option id="M" value="M">Male</option>
+                            <option id="E" value="E">Else</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <form class="form-inline my-2 my-lg-0"
+                    action="{% comment %}{% url 'filterSitter' 'P' parent_post.id %}{% endcomment %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{user_type}}" id="user_type">
+                    <button class="btn btn-info btn-lg btn-block" type="submit" name="q" value="{{q}}"
+                        onclick="filterPost(event);" type="submit">
+                        Search</button>
+                </form>
+            </form>
+        </div>
+        <br>
+
+        <div class="search-container">
+            <form class="form-inline my-2 my-lg-0" action="{% url 'search' 'P' %}" method="post">
+                {% csrf_token %}
+                <input class="form-control mr-sm-2" type="search" placeholder="Search with title" aria-label="Search"
+                    name="input_" value="{{input_}}">
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            {% if member_type == "Parent" %}
+            <a href="{% url 'post_job' %}" class="btn btn-lg btn-warning" style="float: right;" role="button">Post a
+                job-opening</A> {% endif %}
+        </div>
+        <br>
+
+        <div class="col-sm-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in Parent_list %}
+                    <tr>
+                        <td>{{post.writer_name}}</td>
+                        <td><a href="{% url 'view_post' 'P' post.id %}">{{post.title}}</a></td>
+                        <td>{{post.work_condition.location}}</td>
+                        <td>{{post.post_date | date:"Y-m-d"}}</td>
+                        {% empty %}
+                        <td></td>
+                        <td></td>
+                        <td>No result!</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

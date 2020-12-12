@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>I.Helpr Homepage</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
+    <link rel="icon" type="image/png" href="{% static 'img/icon.png' %}">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/navigationBar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homePage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/myPage.css' %}">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-custom navbar-expand-md navbar-dark fixed-top">
+            <a class="navbar-brand" href="{% url 'home' %}">I.Helpr</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_parents' %}">For Parents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_sitters' %}">For Sitters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'mypage' %}">My Page</a>
+                    </li>
+                </ul>
+                <form class="form-inline mt-2 mt-md-0">
+                    {% if user_id == None %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'sign_up' %}">Sign up</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'login' %}">Login</a> {% else %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'mypage' %}">Hello {{ user_name }}!</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'logout' %}">Logout</a> {% endif %}
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Write a Post</h2>
+        <div class="col-md-12 ">
+            <hr class="mb-4">
+            <h4 style="color:#88beac;">Choose Conditions</h4>
+            <form class="needs-validation" novalidate>
+                <p>What service do you want?</p>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info">House sitter</button>
+                    <button type="button" class="btn btn-info">Play sitter</button>
+                    <button type="button" class="btn btn-info">Learning sitter</button>
+                    <button type="button" class="btn btn-info">Day care</button>
+                    <button type="button" class="btn btn-info">Else</button>
+                </div>
+
+                <!-- <hr class="mb-4"> -->
+                <p>Work Period</p>
+                <div class="row">
+                    <div class="custom-control custom-radio" style="margin-left: 15px;">
+                        <input id="short" name="paymentMethod" type="radio" class="custom-control-input" checked>
+                        <label class="custom-control-label" for="short">Short (1day - 1month) </label>
+                    </div>
+                    <div class="custom-control custom-radio" style="margin-left: 20px;">
+                        <input id="medium" name="paymentMethod" type="radio" class="custom-control-input">
+                        <label class="custom-control-label" for="medium">Medium (1month - 6month) </label>
+                    </div>
+                    <div class="custom-control custom-radio" style="margin-left: 20px;">
+                        <input id="long" name="paymentMethod" type="radio" class="custom-control-input">
+                        <label class="custom-control-label" for="long">Long (6month - 1year)</label>
+                    </div>
+                </div>
+                <hr class="mb-4">
+                <p>Work Time</p>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="example-time-input">From</label>
+                        <input class="form-control" type="time" value="11:45:00" id="example-time-input">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="example-time-input">To</label>
+                        <input class="form-control" type="time" value="15:45:00" id="example-time-input">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="location">Location</label>
+                        <select class="custom-select d-block" id="location">
+                            <option value="">Choose...</option>
+                            <option value="songdo1">Sondo 1dong</option>
+                            <option value="songdo2">Sondo 2dong</option>
+                            <option value="songdo3">Sondo 3dong</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="gender">Gender</label>
+                        <select class="custom-select d-block" id="gender">
+                            <option value="notSelected">Do not want to choose</option>
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                            <option value="else">Else</option>
+                        </select>
+                    </div>
+                </div>
+
+                <p>Pay rate</p>
+                <div class="custom-file col-md-3">
+                    <input class="form-control" type="number" value="9000" id="example-number-input">
+                </div>
+
+                <br>
+                <hr class="mb-4">
+                <h4 style="color:#88beac;">Edit Title and Content</h4>
+
+                <div class="custom-file">
+                    <label for="exampleTextarea">Title</label>
+                    <textarea class="form-control" id="editTitle" rows="1" value="{{edit_post.mp_Title}}">{{edit_post.mp_Title}}</textarea>
+                    <label for="exampleTextarea">Content</label>
+                    <textarea class="form-control" id="editContent" rows="5" value="{{edit_post.mp_Note}}">{{edit_post.mp_Note}}</textarea>
+
+                    <hr class="mb-4">
+                    <p>Upload files if you need to</p>
+                    <div class="custom-file col-md-6 mb-3">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+                <button class="btn btn-lg btn-info" style="float: right;" formaction="updateMyPost?mypost_id={{edit_post.mypost_id}}">Edit</button>
+            </form>
+            <br>
+        </div>
+
+    </div>
+</body>
+
+</html>

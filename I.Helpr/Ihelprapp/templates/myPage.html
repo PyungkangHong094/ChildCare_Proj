@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>I.Helpr Homepage</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
+    <link rel="icon" type="image/png" href="{% static 'img/icon.png' %}">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/navigationBar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homePage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/myPage.css' %}"> {% block scripts %}
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        var xhr;
+
+        function update_member() {
+
+            membername = document.getElementById("user_name").value;
+            if (membername == "") {
+                alert("name is empty");
+                document.getElementById("member_name").focus();
+                return false;
+            }
+            // alert(membername)
+            memberemail = document.getElementById("user_email").value;
+            // alert(memberemail)
+            membernumber = document.getElementById("user_number").value;
+            // alert(membernumber)
+            member_type = document.getElementById("member_type").value;
+            if (member_type == "Sitter") {
+                if (document.getElementById("male").checked) {
+
+                    var membergender = "M"
+                } else {
+
+                    var membergender = "F"
+                }
+                // alert(membergender)
+                if (document.getElementById("member_cctv").checked) {
+                    var checkCCTV = true
+                } else {
+                    var checkCCTV = false
+                }
+                // alert(chekcCCTV)
+
+                if (document.getElementById("member_criminal").checked) {
+                    var membercriminal = true
+                } else {
+                    var membercriminal = false
+                }
+                var strurl = "member_update?name=" + membername + "&email=" + memberemail + "&contact_num=" + membernumber + "&gender=" + membergender +
+                    "&cctv=" + checkCCTV + "&crime_history=" + membercriminal;
+                // alert(strurl)
+            } else {
+                var strurl = "member_update?name=" + membername + "&email=" + memberemail + "&contact_num=" + membernumber + "&gender=0&cctv=0&crime_history=0";
+                // alert(strurl);
+            }
+
+            // alert(strurl);
+            // return false;
+
+            xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    var data = xhr.responseText;
+                    var obj = JSON.parse(data);
+                    alert(obj.result);
+                    if (obj.flag == '0') {
+                        location.href = "mypage"
+                    } else {
+                        document.getElementById("member_name").focuse();
+                    }
+                }
+            };
+            xhr.open("GET", strurl);
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            xhr.send(null);
+        }
+    </script>
+
+    {% endblock %}
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-custom navbar-expand-md navbar-dark fixed-top">
+            <a class="navbar-brand" href="{% url 'home' %}">I.Helpr</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_parents' %}">For Parents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_sitters' %}">For Sitters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'mypage' %}">My Page</a>
+                    </li>
+                </ul>
+                <form class="form-inline mt-2 mt-md-0">
+                    {% if member_no == None %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'sign_up' %}">Sign up</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'login' %}">Login</a> {% else %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'mypage' %}">Hello {{ member_name }}!</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'logout' %}">Logout</a> {% endif %}
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <input type="hidden" value="{{member_type}}" id="member_type">
+    <div class="sidenav">
+        <a href="{% url 'mypage' %}">My Page</a>
+        <a href="{% url 'messages' %}">Messages</a>
+        <a href="{% url 'mypost' %}">My posts</a>
+    </div>
+    <div class="container">
+        <h2>My Page</h2>
+        <div class="col-md-12 ">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 style="color:#88beac;">User Profile</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            {% if user_gender == Male %}
+                            <img alt="User Pic" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" id="profile-image1" class="img-circle img-responsive"> {% else %}
+                            <img alt="User Pic" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_f.original.jpg" id="profile-image1" class="img-circle img-responsive"> {% endif %}
+                            <div style="color:#999; margin: 30px; font-size: 30px;">Hi, {{ user_name }} You are logged in as a {{ user_type }}</div>
+                        </div>
+                        <br>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <hr style="margin:7px 0 7px 0;">
+                    <div class="row">
+                        <div class="col-sm-3 tital ">Name:</div>
+                        <input type="input" class="col-sm-9 " id="user_name" value="{{ user_name }}">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="bot-border"></div>
+
+                <div class="row">
+                    <div class="col-sm-3 tital ">Email:</div>
+                    <input type="input" class="col-sm-9" id="user_email" value="{{ user_email }}">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="bot-border"></div>
+
+            <div class="row">
+                <div class="col-sm-3 tital ">Contact Number:</div>
+                <input type="input" class="col-sm-9 " id="user_number" value="{{ user_number }}">
+            </div>
+            <div class="clearfix"></div>
+            <div class="bot-border"></div>
+            {% if user_type == "Sitter" %}
+            <div class="row">
+                <div class="col-sm-3 tital ">Date of Birth:</div>
+                <div class="col-sm-9 " id="member_bday">{{ user_bday | date:'Y-m-d' }}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="bot-border"></div>
+
+            <div class="row">
+                <div class="col-sm-3 tital ">Gender:</div>
+                <div class="custom-control custom-radio">
+                    {% if user_gender == "M" %}
+                    <input id="male" name="gender" type="radio" class="custom-control-input" checked required>
+                    <label class="custom-control-label" for="male">Male</label> {% else %}
+                    <input id="male" name="gender" type="radio" class="custom-control-input">
+                    <label class="custom-control-label" for="male">Male</label> {% endif %}
+                </div>
+
+                <div class="custom-control custom-radio">
+                    {% if user_gender == "F" %}
+                    <input id="female" name="gender" type="radio" class="custom-control-input" checked required>
+                    <label class="custom-control-label" for="female">Female</label> {% else %}
+                    <input id="female" name="gender" type="radio" class="custom-control-input" required>
+                    <label class="custom-control-label" for="female">Female</label> {% endif %}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="bot-border"></div>
+            <div class="row">
+                <div class="col-sm-3 tital ">Agree to work under CCTV:</div>
+                {% if user_CCTV == True %}
+                <input type="checkbox" class="custom-control-input" id="member_cctv" checked required>
+                <label class="custom-control-label" for="member_cctv"></label> {% else %}
+                <input type="checkbox" class="custom-control-input" id="member_cctv" required>
+                <label class="custom-control-label" for="member_cctv"></label> {% endif %}
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="bot-border"></div>
+
+            <div class="row">
+                <div class="col-sm-3 tital ">Agree to criminal history:</div>
+                {% if user_criminal == True %}
+                <input type="checkbox" class="custom-control-input" id="member_criminal" checked required>
+                <label class="custom-control-label" for="member_criminal"></label> {% else %}
+                <input type="checkbox" class="custom-control-input" id="member_criminal" required>
+                <label class="custom-control-label" for="member_criminal"></label> {% endif %}
+            </div>
+            {% endif %}
+            <div class="clearfix"></div>
+            <div class="bot-border"></div>
+            <button class="btn btn-info" style="float:right;" onclick="update_member()">Edit</button>
+        </div>
+
+        <div class="col-md-12 ">
+            <hr style="margin:55px 0 10px 0;">
+            <h4 style="color:#88beac;">My Rating & Reviews</h4>
+
+            <div class="panel-body">
+                <div class="col-sm-12">
+                    <div class="rating-block">
+                        <h5>Average user rating</h5>
+                        <h2 class="bold padding-bottom-7">{{ave_rating}} <small>/ 5</small></h2>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                    </div>
+                    <span class="stars" data-rating="4"></span>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <br>
+                            <h5>Reviews</h5>
+                            <div class="review">
+                                {% for key, value in review_list.items %}
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="review-name">{{value.name}}</div>
+                                        <div class="review-name">Used the service: {{value.service_used}}</div>
+                                        {%comment%}{% if {{i.after_service}} %}
+                                        <div class="review-status">Worked with this user!</div>
+                                        {% else %}
+                                        <div class="review-status">Not worked yet!</div>
+                                        {% endif%}{%endcomment%}
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <h6 class="bold padding-bottom-7">{{value.rating}} <small>/ 5</small></h6>
+                                        <div class="review-description">{{value.content}}</div>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="col-sm-9">
+                                    <div class="review-description" style="text-align: center;"><b>No reviews exist
+                                            yet!</b></div>
+                                </div>
+                                {% endfor %}
+                                <hr />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <hr style="margin:55px 0 10px 0;">
+                <h4 style="color:#88beac;">Review History</h4>
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <br>
+                            <h5>Review List</h5>
+                            <div class="review">
+                                {% for key, value in review_history.items %}
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <div class="review-name">{{value.name}}</div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <h6 class="bold padding-bottom-7">{{value.rating}} <small>/ 5</small></h6>
+                                        <div class="review-description">{{value.content}}</div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <br>
+                                        <div class="review-name">Used the service: {{value.service_used}}</div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a class="btn btn-danger" href="delete-review?review_id={{value.review_id}}" onclick="return confirm('Are you sure to delete?')" role="button">Delete</a>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="col-sm-9">
+                                    <div class="review-description" style="text-align: center;"><b>No reviews exist
+                                            yet!</b></div>
+                                </div>
+                                {% endfor %}
+                                <hr />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                {% if user_type == "Sitter" %}
+                <hr style="margin:55px 0 10px 0;">
+                <br>
+                <h4 style="color:#88beac;">Applications</h4>
+                <div class="col-md-12 ">
+                    <div class="col-md-12">
+                        <h5>Manage my applications</h5>
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <a class="btn btn-info" style="float: right;" href="{% url 'application' %}" role="button">Create New
+                            Application</a>
+                        <table class="table table-hover" id="dev-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for application in application_list %}
+                                <tr>
+                                    <td><a href="{% url 'view_application' application.id %}">{{application.title}}</a>
+                                    </td>
+                                    <td>{{application.date | date:"Y-m-d"}}</td>
+                                    <td><a class="btn btn-danger" href="delete-application?application_id={{application.id}}" onclick="return confirm('Are you sure to delete the application?')" role="button">Delete</a></td>
+                                    {% empty %}
+                                    <td></td>
+                                    <td>You have no applications!</td>
+                                </tr>
+                                {% endfor %}
+                                <!-- <div style="text-align: center;">You have not created an application!</div> -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr style="margin:55px 0 10px 0;">
+                <br>
+                <h4 style="color:#88beac;">Applying History</h4>
+                <div class="col-md-12">
+                    <table class="table table-hover" id="dev-table">
+                        <thead>
+                            <tr>
+                                <th>Applied Post</th>
+                                <th>Application</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in apply_history %}
+                            <tr>
+                                <td><a href="{% url 'view_post' 'P' i.post_id %}">{{i.post.title}}</a></td>
+                                <td><a href="{% url 'view_application' i.application.id %}">{{i.application.title}}</a>
+                                </td>
+                                <td>{{i.date | date:"Y-m-d"}}</td>
+                                <td><a class="btn btn-danger" href="cancel-apply?post_applied_id={{i.post_id}}" onclick="return confirm('Are you sure to cancel applying?')" role="button">Cancel</a></td>
+                                {% empty %}
+                                <td></td>
+                                <td>You have no applying history!</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </table>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

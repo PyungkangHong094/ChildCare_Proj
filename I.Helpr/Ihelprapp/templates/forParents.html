@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>I.Helpr Homepage</title>
+
+    <link rel="icon" type="image/png" href="{% static 'img/icon.png' %}">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/navigationBar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homePage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/myPage.css' %}">
+    {% block scripts %}
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+        function get_cookie(name) {
+            var cookie_value = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookie_value;
+        }
+        var csrftoken = get_cookie('csrftoken');
+        var xhr;
+
+
+        function filter_post(e) {
+            e.preventDefault()
+            //Service
+            var sitter_service = document.getElementById("post_type").value;
+            if (sitter_service == "1") {
+                alert('sitter_service need to choose');
+                return false;
+            }
+            // alert(parent_service)
+
+            //Rate
+            sitter_payrate = document.getElementById("sitter_payrate").value;
+            // alert(parent_payrate)
+
+            //Work Period
+            if (document.getElementById('short').checked) {
+                sitter_workperiod = "S"
+            } else if (document.getElementById('medium').checked) {
+                sitter_workperiod = "M"
+            } else if (document.getElementById('long').checked) {
+                sitter_workperiod = "L"
+            } else {
+                alert('Select work period...')
+                return false
+            }
+            // alert(parent_workperiod)
+
+            //from
+            sitter_timestart = document.getElementById("sitter_timefrom").value;
+            // alert(parent_timestart)
+
+            //Gender
+            sitter_workend = document.getElementById("sitter_workto").value;
+            // alert(parent_workend)
+            //지역
+            sitter_location = document.getElementById("sitter_location").value;
+            // alert(parent_location)
+            //성별
+            let member_gender = document.getElementById("gender").value;
+
+
+            strurl = "for-parents?type_of_service=" + sitter_service + "&payrate=" + sitter_payrate + "&work_period=" + sitter_workperiod + "&begin_work_time=" +
+                sitter_timestart + "&end_work_time=" + sitter_workend + "&location=" + sitter_location + "&gender=" + member_gender;
+            // alert(strurl);
+            location.href = strurl
+        }
+
+        function type_value(element) {
+            document.getElementById("post_type").value = element.value;
+        }
+    </script>
+    {% endblock %}
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-custom navbar-expand-md navbar-dark fixed-top">
+            <a class="navbar-brand" href="{% url 'home' %}">I.Helpr</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'for_parents' %}">For Parents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_sitters' %}">For Sitters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    {% if member_no != None %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mypage' %}">My Page</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <form class="form-inline mt-2 mt-md-0">
+                    {% if member_no == None %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'sign_up' %}">Sign up</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'login' %}">Login</a> {% else %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'mypage' %}">Hello {{ member_name }}!</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'logout' %}">Logout</a> {% endif %}
+                </form>
+            </div>
+        </nav>
+    </header>
+    <input type="hidden" id="post_type" value="House Sitter">
+    <div class="container">
+        <h2> </h2>
+        <br>
+        <h2>For Parents: Looking for sitters?</h2>
+        <div style="border: 1px solid; border-radius: 5px; padding: 10px;">
+            <h4 class="mb-3">Filters</h4>
+            <form class="needs-validation" novalidate>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <p>What service do you want?</p>
+                        <div class="btn-group" id="sitter_service">
+                            <button value="H" onclick="type_value(this)" type="button" class="btn btn-info">House
+                                sitter</button>
+                            <button value="P" onclick="type_value(this)" type="button" class="btn btn-info">Play
+                                sitter</button>
+                            <button value="L" onclick="type_value(this)" type="button" class="btn btn-info">Learning
+                                sitter</button>
+                            <button value="D" onclick="type_value(this)" type="button" class="btn btn-info">Day
+                                care</button>
+                            <button value="E" onclick="type_value(this)" type="button"
+                                class="btn btn-info">Else</button>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Pay rate</label>
+                                <input class="form-control" type="number" value="9000" id="sitter_payrate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mb-1">
+                <p>Work Period</p>
+                <div class="row">
+                    <div class="custom-control custom-radio" style="margin-left: 15px;">
+                        <input id="short" name="paymentMethod" type="radio" class="custom-control-input" checked>
+                        <label class="custom-control-label" for="short">Short (1day - 1month) </label>
+                    </div>
+                    <div class="custom-control custom-radio" style="margin-left: 20px;">
+                        <input id="medium" name="paymentMethod" type="radio" class="custom-control-input">
+                        <label class="custom-control-label" for="medium">Medium (1month - 6month) </label>
+                    </div>
+                    <div class="custom-control custom-radio" style="margin-left: 20px;">
+                        <input id="long" name="paymentMethod" type="radio" class="custom-control-input">
+                        <label class="custom-control-label" for="long">Long (6month - 1year)</label>
+                    </div>
+                </div>
+
+                <hr class="mb-1">
+                <p>Work Time</p>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="example-time-input">From</label>
+                        <input class="form-control" type="time" value="11:45:00" id="sitter_timefrom">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="example-time-input">To</label>
+                        <input class="form-control" type="time" value="15:45:00" id="sitter_workto">
+                    </div>
+                </div>
+
+                <hr class="mb-1">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="location">Location</label>
+                        <input type="text" class="form-control" id="sitter_location" rows="1"
+                            placeholder="Songdo 1dong~Songdo 3dong"></input>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="gender">Gender</label>
+                        <select class="custom-select d-block" id="gender">
+                            <option value="notSelected">Do not want to choose</option>
+                            <option id="female" value="F">Female</option>
+                            <option id="male" value="M">Male</option>
+                            <option id="else" value="E">Else</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <form class="form-inline my-2 my-lg-0"
+                    action="{% comment %}{% url 'filterParent' 'S' %}{% endcomment %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" value="SS" id="filter_type" name="type">
+                    <button class="btn btn-info btn-lg btn-block" type="submit" name="q" onclick="filter_post(event);"
+                        type="submit">
+                        Search</button>
+                </form>
+            </form>
+        </div>
+        <br>
+
+        <div class="search-container">
+
+            <form class="form-inline my-2 my-lg-0" action="{% url 'search' 'S' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" value="SS" id="post_type" name="type">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search with title" aria-label="Search"
+                    name="input_" value="{{input_}}">
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            {% if member_type == "Sitter" %}
+            <A href="{% url 'post_page' %}" class="btn btn-lg btn-warning" style="float: right;">Post a
+                job-wanted</A> {% endif %}
+        </div>
+        <br>
+        
+        <div class="col-sm-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in sitter_list %}
+                    <tr>
+                        <td>{{post.writer_name}}</td>
+                        <td><a href="{% url 'view_post' 'S' post.id %}">{{post.title}}</a> </td>
+                        <td>{{post.work_condition.location}}</td>
+                        <td>{{post.post_date | date:"Y-m-d"}}</td>
+                        {% empty %}
+                        <td></td>
+                        <td></td>
+                        <td>No result!</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script>
+        window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+    <!-- <script src="form-validation.js"></script> -->
+</body>
+
+</html>
+<script>
+    function getURLParameter(name) {
+        return decodeURI((RegExp(name + '=' + '(.+?)(&|$)').exec(location.search) || [, null])[1]);
+    }
+
+    function hideURLParams() {
+        //Parameters to hide (ie ?success=value, ?error=value, etc)
+        var hide = ['success', 'error'];
+        for (var h in hide) {
+            if (getURLParameter(h)) {
+                history.replaceState(null, document.getElementsByTagName("title")[0].innerHTML, window.location.pathname);
+            }
+        }
+    }
+    //Run onload, you can do this yourself if you want to do it a different way
+    window.onload = hideURLParams;
+</script>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>Sign up</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/sign-in/">
+    <link rel="icon" type="image/png" href="{% static 'img/icon.png' %}">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/navigationBar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/logIn.css' %}">
+</head>
+
+<body class="text-center">
+    <header>
+        <nav class="navbar navbar-custom navbar-expand-md navbar-dark fixed-top">
+            <a class="navbar-brand" href="{% url 'home' %}">I.Helpr</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_parents' %}">For Parents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_sitters' %}">For Sitters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    {% if member_no != None %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mypage' %}">My Page</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <form class="form-inline mt-2 mt-md-0">
+                    {% if member_no == None %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'sign_up' %}">Sign up</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'login' %}">Login</a> {% else %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'mypage' %}">Hello {{ member_name }}!</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'logout' %}">Logout</a> {% endif %}
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="card-deck mb-3 text-center">
+            <div class="card mb-4 shadow-lg">
+                {% if member_no == None %}
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">For Parents</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">Sign up as a Parent!</h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>Looking for sitters?</li>
+                        <li>Sign up and see the list of sitters!</li>
+                        <li>You can choose by the conditions you want.</li>
+                    </ul>
+                    <form>
+                        <a class="btn btn-lg btn-block btn-outline-info" href="{% url 'parents_signup' %}">Sign up for
+                            free</a>
+                    </form>
+                </div>
+            </div>
+            <div class="card mb-4 shadow-lg">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">For Sitters</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">Sign up as a Sitter!</h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>Looking for jobs?</li>
+                        <li>Sign up and see the list of jobs!</li>
+                        <li>You can choose by the conditions you want.</li>
+                    </ul>
+                    <form>
+                        <a class="btn btn-lg btn-block btn-outline-info" href="{% url 'sitters_signup' %}">Sign up for
+                            free</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <a href="{% url 'login' %}">Already signed up!</a> {% else %}
+        <div class="card-body">
+            <h1 class="card-title pricing-card-title">You want to make other account?</h1>
+            <ul class="list-unstyled mt-3 mb-4">
+                <li>Please log out</li>
+            </ul>
+            <form>
+                <a class="btn btn-lg btn-block btn-outline-info" href="{% url 'home' %}">You already sign up</a>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

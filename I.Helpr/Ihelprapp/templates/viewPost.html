@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/png" href="{% static 'img/icon.png' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>I.Helpr viewPost</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/navigationBar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homePage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-custom navbar-expand-md navbar-dark fixed-top">
+            <a class="navbar-brand" href="{% url 'home' %}">I.Helpr</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_parents' %}">For Parents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_sitters' %}">For Sitters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mypage' %}">My Page</a>
+                    </li>
+                </ul>
+                <form class="form-inline mt-2 mt-md-0">
+                    {% if member_no == None %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'sign_up' %}">Sign up</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'login' %}">Login</a> {% else %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'mypage' %}">Hello {{ member_name }}!</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'logout' %}">Logout</a> {% endif %}
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2> Detail </h2>
+        <div class="col-md-12 ">
+            <h4 style="color:#88beac;">View Post</h4>
+            <div class="custom-file">
+                <h3>{{post_detail.title}}</h3>
+                <p style="text-align: right;">{{post_detail.writer_name}} | {{post_detail.post_date}}</p>
+                <div class="card">
+                    <p> {{post_detail.content}} </p>
+                </div>
+
+            </div>
+            <br>
+            <hr class="mb-4">
+
+            <br>
+            <h4 style="color:#88beac;"> Conditions</h4>
+            <form class="needs-validation" novalidate>
+                <p>What service do you want?</p>
+                <input readonly class="form-control" value="{{service}}">
+
+                <hr class="mb-4">
+                <p>Work Period</p>
+                <input readonly class="form-control" value="{{period}}">
+                <hr class="mb-4">
+                <p>Work Time</p>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="example-time-input">From</label>
+                        <input readonly class="form-control" value="{{post_detail.work_condition.begin_work_time}}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="example-time-input">To</label>
+                        <input readonly class="form-control" value="{{post_detail.work_condition.end_work_time}}">
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="location">Location</label>
+                        <br>
+                        <input readonly class="form-control" value=" {{post_detail.work_condition.location}}">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="gender">Gender</label>
+                        <br>
+                        <input readonly class="form-control" value=" {{gender}}">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="payrate">Pay rate</label>
+                        <br>
+                        <input readonly class="form-control" value=" {{post_detail.work_condition.payrate}}">
+                    </div>
+                </div>
+            </form>
+
+            <hr class="mb-4">
+            <div class="applybutton">
+                {% if post_type == "P"%} {% if member_type == "Sitter"%}
+                <a rel="prev" type="button" class="btn btn-light" href="{% url 'for_parents' %}"
+                    style="float: right;">Go back</a>
+                <a class="btn btn-warning" href="{% url 'write_message' %}">Send Message</a>
+                <a class="btn btn-danger" href="{% url 'select_application' %}">Apply!</a> {% endif %} {% else %}
+                {% if member_type == "Parent"%}
+                <a rel="prev" type="button" class="btn btn-light" href="{% url 'for_parents' %}"
+                    style="float: right;">Go back</a>
+                <a class="btn btn-warning" href="{% url 'write_message' %}">Send Message</a> {% endif %} {% endif %}
+            </div>
+
+            <br>
+        </div>
+    </div>
+</body>
+
+</html>

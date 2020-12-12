@@ -1,0 +1,44 @@
+.sidenav {
+    width: 190px;
+    position: fixed;
+    z-index: 1;
+    top: 65px;
+    left: 10px;
+    background: #e8faf4;
+    overflow-x: hidden;
+    padding: 8px 0;
+}
+  
+.sidenav a {
+    padding: 12px 8px 12px 13px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #28493e;
+    display: block;
+    margin-left: 30px;
+}
+  
+.sidenav a:hover {
+    color: #83bca9;
+}
+
+.container{
+    padding-top: 50px;
+    padding-left: 120px;
+}
+  
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+#profile-image1 {
+    width: 140px;
+    height: 140px;
+	border:2px solid #03b1ce ;}
+	.tital{ font-size:16px; font-weight:500;}
+    .bot-border{ border-bottom:1px #f8f8f8 solid;  margin:5px 0  5px 0}	
+
+.checked {
+    color: orange;
+}

@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>I.Helpr Homepage</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
+    <link rel="icon" type="image/png" href="{% static 'img/icon.png' %}">
+
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/navigationBar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homePage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/myPage.css' %}"> {% block scripts %}
+    <script>
+        function get_cookie(name) { //설명
+            var cookie_value = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookie_value = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookie_value;
+        }
+        var csrftoken = get_cookie('csrftoken');
+
+        var xhr;
+
+        function register_member() {
+
+            memberemail = document.getElementById("member_email").value;
+            if (memberemail == "") {
+                alert("Id is empty");
+                document.getElementById("member_email").focus();
+                return false;
+            }
+
+            memberpwd = document.getElementById("member_pwd").value;
+            if (memberpwd == "") {
+                alert("Password is empty");
+                document.getElementById("member_pwd").focus();
+                return false;
+            }
+            if (memberpwd.length > 7) {
+            } else {
+                alert("You have to enter at least 8 digit!");
+                document.getElementById("member_pwd").focus();
+                return false;
+            }
+
+            memberpwd2 = document.getElementById("member_pwd2").value;
+            if (memberpwd2 == "") {
+                document.getElementById("member_pwd2").focus();
+                return false;
+            }
+
+            if (memberpwd != memberpwd2) {
+                alert("Password is not match");
+                document.getElementById("member_pwd2").focus();
+                return false;
+            }
+
+            if (document.getElementById("member_cctv").checked) {
+                var check_cctv = true
+            } else {
+                var check_cctv = false
+            }
+
+            if (document.getElementById("member_criminal").checked) {
+                var membercriminal = true
+            } else {
+                var membercriminal = false
+            }
+
+            if (document.getElementById("male").checked) {
+                var membergender = "M"
+            } else {
+                var membergender = "F"
+            }
+            membername = document.getElementById("member_name").value;
+            membernumber = document.getElementById("member_number").value;
+            memberbday = document.getElementById("member_bday").value;
+
+            var strurl = "sitter_insert?email=" + memberemail + "&password=" + memberpwd + "&name=" + membername +
+                "&contact_num=" + membernumber + "&b_date=" + memberbday + "&gender=" + membergender +
+                "&cctv=" + check_cctv + "&crime_history=" + membercriminal;
+
+
+            xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    var data = xhr.responseText;
+                    var obj = JSON.parse(data);
+                    alert(obj.result);
+                    location.href = "/"
+                }
+            };
+            xhr.open("POST", strurl); //Method
+            xhr.setRequestHeader("X-CSRFToken", csrftoken); //Content's type
+            xhr.send(null);
+        }
+
+        function checkId() {
+            memberemail = document.getElementById("member_email").value;
+            if (memberemail == "") {
+                alert("Id is empty");
+                document.getElementById("member_email").focus();
+                return false;
+            }
+            var strurl = "sitter_idcheck?email=" + memberemail;
+            // alert(strurl)
+            // return false;
+            xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    var data = xhr.responseText;
+                    var obj = JSON.parse(data);
+                    alert(obj.result);
+
+                    if (obj.flag == "1") {
+                        // alert(obj.result)
+                        document.getElementById("member_email").focus();
+                    } else {
+                        alert(obj.result)
+                        document.getElementById("idcheck").value = "1";
+                        document.getElementById("member_email").disabled();
+                    }
+                }
+            };
+            xhr.open("POST", strurl);
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            xhr.send(null);
+        }
+    </script>
+    {% endblock %}
+</head>
+
+<body>
+    <header>
+        <!-- <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-success"> -->
+        <nav class="navbar navbar-custom navbar-expand-md navbar-dark fixed-top">
+            <a class="navbar-brand" href="{% url 'home' %}">I.Helpr</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_parents' %}">For Parents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'for_sitters' %}">For Sitters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    {% if member_no != None %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mypage' %}">My Page</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <form class="form-inline mt-2 mt-md-0">
+                    {% if member_no == None %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'sign_up' %}">Sign up</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'login' %}">Login</a> {% else %}
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'mypage' %}">Hello {{ member_name }}!</a>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href="{% url 'logout' %}">Logout</a> {% endif %}
+                </form>
+            </div>
+        </nav>
+    </header>
+    <div class="container" style="padding-left: 15px;">
+        <inout type="hidden" id="idcheck" value="0" />
+        <div class="py-5 text-center">
+            <!-- <img class="d-block mx-auto mb-4" src="/docs/4.5/assets/brand/bootstrap-solid.svg" alt="" width="72"
+                height="72"> -->
+            <h2>Sitter User Sign Up Form</h2>
+        </div>
+
+        <div class="col-md-8 order-md-1" style="max-width: 70%; margin: auto;">
+            <form class="needs-validation" novalidate>
+                <div class="row">
+                    <div class="col-sm-8">
+
+                        <label for="email">Email</label>
+                        <div class="form-inline">
+                            <input type="email" class="form-control" name="member_email" id="member_email"
+                                placeholder="you@example.com">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="button" class="btn btn-success my-2 my-sm-0"
+                                onclick="checkId();">Check</button>
+                            <div class="invalid-feedback">
+                                Please enter a valid email address.
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">Password(Require 8 lettrs):<input type="password" class="form-control"
+                                    name="member_pwd" minlength="8" id="member_pwd" required></div>
+                            <div class="col-sm-6">Confirm Password<input type="password" class="form-control"
+                                    name="member_pwd2" id="member_pwd2" required></div>
+                        </div>
+
+                        <label for="firstName">Sitter's name</label>
+                        <input type="text" class="form-control" name="member_name" id="member_name">
+
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="contact_num">Contact number</label>
+                    <input type="text" class="form-control" id="member_number" placeholder="010-xxxx-xxxx" required>
+                    <div class="invalid-feedback">
+                        Please enter your contact number.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="d-block my-3">
+                        <label for="contact_num">Gender</label>
+                        <div class="custom-control custom-radio">
+                            <input id="male" name="gender" type="radio" class="custom-control-input" checked required>
+                            <label class="custom-control-label" for="male">Male</label>
+                        </div>
+
+                        <div class="custom-control custom-radio">
+                            <input id="female" name="gender" type="radio" class="custom-control-input" required>
+                            <label class="custom-control-label" for="female">Female</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="birth_date">Date of birth</label>
+                    <input type="text" class="form-control" id="member_bday" placeholder="YYYY-MM-DD" required>
+                    <div class="invalid-feedback">
+                        Please enter your date of birth.
+                    </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="member_cctv">
+                        <label class="custom-control-label" for="member_cctv">Do you agree to work under security
+                            cameras?</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="member_criminal">
+                        <label class="custom-control-label" for="member_criminal">Do you consent for us checking your
+                            criminal
+                            background?</label>
+                    </div>
+                </div>
+
+                <hr class="mb-4" style="margin-top: 35px; margin-bottom: 65px;">
+                <div class="text-center">
+                    <a class="btn btn-info btn-lg btn-block" style="width: 20%; margin: 0 auto;" type="submit"
+                        onclick="register_member();">Submit</a>
+
+
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
